@@ -2,7 +2,7 @@ import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-TOKEN = os.getenv("8087961436:AAGlF0kYCl8Fn-UAr3OclgUCJdke5yMeKUg")
+TOKEN = ("8087961436:AAGlF0kYCl8Fn-UAr3OclgUCJdke5yMeKUg")
 WEBHOOK_BASE_URL = os.getenv("https://moty-bot.onrender.com")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
