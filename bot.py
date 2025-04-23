@@ -2,7 +2,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler
 
 # Inserisci il tuo token qui (non condividerlo mai pubblicamente!)
-BOT_TOKEN = "8152725037:AAHkR2oKFSVmTRerxOg-Vxg30ztcPb5VQFU"
+BOT_TOKEN = "8087961436:AAGNpR9L2txEWTBAZu6YMR7_kXIAPNrYOXk"
 
 # Messaggio di benvenuto
 WELCOME_MESSAGE = """
