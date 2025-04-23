@@ -1,12 +1,10 @@
+import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler
 
-# Inserisci il tuo token qui (non condividerlo mai pubblicamente!)
-BOT_TOKEN = "8087961436:AAGNpR9L2txEWTBAZu6YMR7_kXIAPNrYOXk"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
-# Messaggio di benvenuto
-WELCOME_MESSAGE = """
-Ciao, sono Moty, l'assistente AI di Bmotive!
+WELCOME_MESSAGE = """Ciao, sono Moty, l'assistente AI di Bmotive!
 
 Posso aiutarti a:
 - Trovare prompt e automazioni già pronti
@@ -16,7 +14,6 @@ Posso aiutarti a:
 Cosa vuoi fare oggi?
 """
 
-# Comando /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("Pacchetti Prompt", callback_data="prompt")],
@@ -27,7 +24,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text(WELCOME_MESSAGE, reply_markup=reply_markup)
 
-# Gestione pulsanti
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -39,15 +35,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == "acquisti":
         await query.edit_message_text("Qui troverai i tuoi pacchetti acquistati. (in arrivo!)")
 
-# Avvio del bot
-def main():
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
+application = ApplicationBuilder().token(BOT_TOKEN).build()
+application.add_handler(CommandHandler("start", start))
+application.add_handler(CallbackQueryHandler(button_handler))
 
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(button_handler))
-
-    print("Moty è online!")
-    app.run_polling()
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    application.run_webhook(
+        listen="0.0.0.0",
+        port=int(os.environ.get("PORT", 10000)),
+        url_path=BOT_TOKEN,
+        webhook_url=f"{os.environ.get('WEBHOOK_BASE_URL')}/{BOT_TOKEN}"
+    )
