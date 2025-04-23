@@ -8,6 +8,8 @@ from telegram.ext import (
 )
 
 TOKEN = ("8087961436:AAGlF0kYCl8Fn-UAr3OclgUCJdke5yMeKUg")
+WEBHOOK_BASE_URL = ("https://moty-bot.onrender.com")
+
 # ——— MENU PRINCIPALE ———
 def get_main_menu():
     keyboard = [
