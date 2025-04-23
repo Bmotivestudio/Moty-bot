@@ -2,7 +2,7 @@ import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler
 
-BOT_TOKEN = os.getenv("8087961436:AAGNpR9L2txEWTBAZu6YMR7_kXIAPNrYOXk")
+BOT_TOKEN = os.getenv("8087961436:AAGlF0kYCl8Fn-UAr3OclgUCJdke5yMeKUg")
 
 WELCOME_MESSAGE = """Ciao, sono Moty, l'assistente AI di Bmotive!
 
