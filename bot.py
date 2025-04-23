@@ -15,11 +15,61 @@ Scegli un'opzione qui sotto:
 """
 
 PROMPT_CONTENT = {
-    "prompt_instagram": "📱 Pacchetto Instagram & TikTok:\nPrompt per creare contenuti virali, caption perfette e piani editoriali.",
-    "prompt_vendita": "💼 Pacchetto Vendita:\nPrompt per vendere di più con l'AI, scrivere descrizioni persuasive ed email che convertono.",
-    "prompt_assistente": "🤖 Crea il tuo AI Assistant:\nPrompt per costruire un assistente AI su misura per il tuo lavoro.",
-    "prompt_free": "🎁 Ecco il tuo prompt gratuito:\n👉 Agisci come un copywriter esperto e crea una caption accattivante per promuovere un nuovo prodotto ecologico.",
-    "acquista": "🛒 Per acquistare uno dei miei pacchetti, visita la pagina ufficiale o scegli un pacchetto e riceverai il link al pagamento. (link in arrivo)"
+    "prompt_instagram": """📱 *Pacchetto Instagram & TikTok*
+
+🔥 Vuoi contenuti virali senza impazzire?
+
+Con questo pacchetto di prompt ottieni:
+✅ Caption ad effetto per Reels e post
+✅ Idee video TikTok in trend
+✅ Hook e call-to-action che convertono
+✅ Prompt per commenti coinvolgenti
+✅ Piano contenuti settimanale automatizzato
+
+Perfetto per freelance, creator, piccoli brand.
+📦 Formato: PDF scaricabile + prompt integrabili nel tuo AI Assistant
+
+💰 Prezzo: 9€""",
+    
+    "prompt_vendita": """💼 *Pacchetto per vendere online*
+
+💸 Vuoi vendere di più con l’AI?
+
+Con questo pacchetto:
+✅ Scrivi descrizioni prodotto persuasive
+✅ Crea email automatiche che portano vendite
+✅ Rispondi ai clienti indecisi con empatia
+✅ Recuperi carrelli abbandonati con stile
+✅ Costruisci offerte irresistibili
+
+Ideale per chi ha un e-commerce o offre servizi online.
+📦 Formato: PDF + accesso a prompt testabili nel bot
+
+💰 Prezzo: 12€""",
+    
+    "prompt_assistente": """🤖 *Pacchetto: Crea il tuo AI Assistant*
+
+⚙️ Vuoi un assistente AI che lavori per te?
+
+Con questo pacchetto impari a:
+✅ Creare un AI Assistant su misura per il tuo business
+✅ Organizzare task, note vocali e messaggi automatici
+✅ Personalizzare tono, obiettivi e stile
+✅ Collegarlo a Telegram, Notion e Google Calendar
+
+📦 Contenuto: Prompt pronti + guida interattiva
+
+💰 Prezzo: 15€""",
+
+    "prompt_free": """🎁 *Prompt gratuito*
+
+👉 Agisci come un copywriter esperto e crea una caption accattivante per promuovere un nuovo prodotto ecologico.""",
+
+    "acquista": """🛒 *Acquista pacchetti*
+
+Per acquistare uno dei miei pacchetti, seleziona quello che ti interessa e riceverai il link al pagamento. (in arrivo)
+
+Presto sarà attivo anche il pagamento direttamente in questa chat!"""
 }
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -27,7 +77,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("📱 Prompt Instagram & TikTok", callback_data="prompt_instagram")],
         [InlineKeyboardButton("💼 Prompt per vendere online", callback_data="prompt_vendita")],
         [InlineKeyboardButton("🤖 Crea il tuo AI Assistant", callback_data="prompt_assistente")],
-        [InlineKeyboardButton("🎁 Ricevi un prompt gratuito", callback_data="prompt_free")],
+        [InlineKeyboardButton("🎁 Prompt gratuito", callback_data="prompt_free")],
         [InlineKeyboardButton("🛒 Acquista pacchetti", callback_data="acquista")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -37,7 +87,7 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     content = PROMPT_CONTENT.get(query.data, "❌ Selezione non valida.")
-    await query.edit_message_text(text=content)
+    await query.edit_message_text(text=content, parse_mode="Markdown")
 
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
