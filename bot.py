@@ -1,83 +1,48 @@
 import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import (
-    ApplicationBuilder,
-    CommandHandler,
-    CallbackQueryHandler,
-    ContextTypes,
-)
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
-TOKEN = ("8087961436:AAGlF0kYCl8Fn-UAr3OclgUCJdke5yMeKUg")
-WEBHOOK_BASE_URL = ("https://moty-bot.onrender.com")
-
-# ——— MENU PRINCIPALE ———
+# Funzione per mostrare il menu principale
 def get_main_menu():
     keyboard = [
-        [InlineKeyboardButton("💡 Acquista pacchetti prompt", callback_data="acquista_pacchetti")],
-        [InlineKeyboardButton("🤖 Quiz automatico", callback_data="quiz_consulenza")],
-        [InlineKeyboardButton("💳 Acquista con Stripe", callback_data="pagamenti")],
-        [InlineKeyboardButton("✨ Branding & Social", callback_data="branding")]
+        [InlineKeyboardButton("📦 Acquista pacchetti", callback_data="acquista_pacchetti")],
+        [InlineKeyboardButton("🧠 Quiz consulenza", callback_data="quiz_consulenza")],
+        [InlineKeyboardButton("💳 Pagamenti", callback_data="pagamenti")],
+        [InlineKeyboardButton("🎨 Branding e Social", callback_data="branding")]
     ]
     return InlineKeyboardMarkup(keyboard)
 
-def add_menu_button(keyboard):
-    keyboard.append([InlineKeyboardButton("🔙 Menu", callback_data="menu")])
-    return InlineKeyboardMarkup(keyboard)
-
-# ——— START ———
+# Avvio del bot
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Ciao! Sono Moty 🤖", reply_markup=get_main_menu())
 
-# ——— CALLBACKS ———
-async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+# Gestione dei pulsanti
+async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    data = query.data
     await query.answer()
 
-    if data == "menu":
-        await query.edit_message_text("Menu principale:", reply_markup=get_main_menu())
+    if query.data == "acquista_pacchetti":
+        text = "🎯 Scegli tra i pacchetti pronti:\n\n1. Business\n2. Creatività\n3. Crescita personale"
+    elif query.data == "quiz_consulenza":
+        text = "🧠 Avvia il quiz automatico per scoprire cosa ti serve davvero!"
+    elif query.data == "pagamenti":
+        text = "💳 Prossimamente potrai pagare direttamente qui!"
+    elif query.data == "branding":
+        text = "🎨 Servizi di branding, contenuti e crescita social!"
 
-    elif data == "acquista_pacchetti":
-        keyboard = [
-            [InlineKeyboardButton("📦 Starter", callback_data="starter")],
-            [InlineKeyboardButton("🚀 Pro", callback_data="pro")],
-            [InlineKeyboardButton("🏆 Master", callback_data="master")]
-        ]
-        await query.edit_message_text("Scegli un pacchetto:", reply_markup=add_menu_button(keyboard))
+    # Rispondi con il contenuto + sempre il menu disponibile
+    await query.edit_message_text(text=text, reply_markup=get_main_menu())
 
-    elif data == "starter":
-        text = "📦 **Starter Pack**:\n5 prompt originali + guida PDF per iniziare a vendere. Prezzo: 5€"
-        await query.edit_message_text(text, reply_markup=add_menu_button([]))
-
-    elif data == "pro":
-        text = "🚀 **Pro Pack**:\n15 prompt avanzati + strategie di vendita + supporto Telegram. Prezzo: 15€"
-        await query.edit_message_text(text, reply_markup=add_menu_button([]))
-
-    elif data == "master":
-        text = "🏆 **Master Pack**:\nTutti i prompt + 1 consulenza + accesso aggiornamenti. Prezzo: 30€"
-        await query.edit_message_text(text, reply_markup=add_menu_button([]))
-
-    elif data == "quiz_consulenza":
-        await query.edit_message_text("🧠 Il quiz automatico è in sviluppo!", reply_markup=add_menu_button([]))
-
-    elif data == "pagamenti":
-        await query.edit_message_text("💳 Supporto Stripe e Telegram Payments in arrivo!", reply_markup=add_menu_button([]))
-
-    elif data == "branding":
-        await query.edit_message_text("📱 Consulenza su branding e social media disponibile presto!", reply_markup=add_menu_button([]))
-
-# ——— AVVIO APP ———
+# Avvio del bot in modalità polling
 def main():
+    TOKEN = ("8087961436:AAGlF0kYCl8Fn-UAr3OclgUCJdke5yMeKUg")
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(handle_callback))
+    app.add_handler(CallbackQueryHandler(button_handler))
 
-    app.run_webhook(
-        listen="0.0.0.0",
-        port=10000,
-        webhook_url=f"{WEBHOOK_BASE_URL}/webhook"
-    )
+    print("🤖 Moty Assistant avviato (modalità polling)")
+    app.run_polling()
 
 if __name__ == "__main__":
     main()
