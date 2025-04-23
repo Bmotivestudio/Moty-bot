@@ -1,4 +1,4 @@
-\f0\fs24 \cf0 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup\
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup\
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler\
 \
 # Inserisci il tuo token qui (non condividerlo mai pubblicamente!)\
