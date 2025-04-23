@@ -14,64 +14,19 @@ Scopri i miei pacchetti di prompt per:
 Scegli un'opzione qui sotto:
 """
 
+# Dizionario risposte
 PROMPT_CONTENT = {
-    "prompt_instagram": """📱 *Pacchetto Instagram & TikTok*
-
-🔥 Vuoi contenuti virali senza impazzire?
-
-Con questo pacchetto di prompt ottieni:
-✅ Caption ad effetto per Reels e post
-✅ Idee video TikTok in trend
-✅ Hook e call-to-action che convertono
-✅ Prompt per commenti coinvolgenti
-✅ Piano contenuti settimanale automatizzato
-
-Perfetto per freelance, creator, piccoli brand.
-📦 Formato: PDF scaricabile + prompt integrabili nel tuo AI Assistant
-
-💰 Prezzo: 9€""",
-    
-    "prompt_vendita": """💼 *Pacchetto per vendere online*
-
-💸 Vuoi vendere di più con l’AI?
-
-Con questo pacchetto:
-✅ Scrivi descrizioni prodotto persuasive
-✅ Crea email automatiche che portano vendite
-✅ Rispondi ai clienti indecisi con empatia
-✅ Recuperi carrelli abbandonati con stile
-✅ Costruisci offerte irresistibili
-
-Ideale per chi ha un e-commerce o offre servizi online.
-📦 Formato: PDF + accesso a prompt testabili nel bot
-
-💰 Prezzo: 12€""",
-    
-    "prompt_assistente": """🤖 *Pacchetto: Crea il tuo AI Assistant*
-
-⚙️ Vuoi un assistente AI che lavori per te?
-
-Con questo pacchetto impari a:
-✅ Creare un AI Assistant su misura per il tuo business
-✅ Organizzare task, note vocali e messaggi automatici
-✅ Personalizzare tono, obiettivi e stile
-✅ Collegarlo a Telegram, Notion e Google Calendar
-
-📦 Contenuto: Prompt pronti + guida interattiva
-
-💰 Prezzo: 15€""",
-
-    "prompt_free": """🎁 *Prompt gratuito*
-
-👉 Agisci come un copywriter esperto e crea una caption accattivante per promuovere un nuovo prodotto ecologico.""",
-
-    "acquista": """🛒 *Acquista pacchetti*
-
-Per acquistare uno dei miei pacchetti, seleziona quello che ti interessa e riceverai il link al pagamento. (in arrivo)
-
-Presto sarà attivo anche il pagamento direttamente in questa chat!"""
+    "prompt_instagram": "📱 Pacchetto Instagram & TikTok:\nPrompt per contenuti virali e caption perfette.\n💰 Prezzo: 9",
+    "prompt_vendita": "💼 Pacchetto per vendere online:\nPrompt per vendere di più con l'AI.\n💰 Prezzo: 12",
+    "prompt_assistente": "🤖 Crea il tuo AI Assistant:\nPrompt per costruire un assistente AI personalizzato.\n💰 Prezzo: 15",
+    "prompt_free": "🎁 Prompt gratuito:\n👉 Agisci come un copywriter esperto e crea una caption accattivante per promuovere un nuovo prodotto ecologico.",
+    "acquista": "🛒 Scegli un pacchetto da acquistare:",
+    "acquista_ig": "Per acquistare il Pacchetto Instagram & TikTok clicca qui sotto.\n📦 Dopo il pagamento riceverai il PDF:\n👉 [LINK PAGAMENTO]",
+    "acquista_vendita": "Per acquistare il Pacchetto Vendita clicca qui sotto.\n📦 Dopo il pagamento riceverai il PDF:\n👉 [LINK PAGAMENTO]",
+    "acquista_ai": "Per acquistare il Pacchetto Assistant clicca qui sotto.\n📦 Dopo il pagamento riceverai il PDF:\n👉 [LINK PAGAMENTO]"
 }
 
+# Menu principale
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("📱 Prompt Instagram & TikTok", callback_data="prompt_instagram")],
@@ -83,11 +38,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text(WELCOME_TEXT, reply_markup=reply_markup)
 
+# Gestione pulsanti
 async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    content = PROMPT_CONTENT.get(query.data, "❌ Selezione non valida.")
-    await query.edit_message_text(text=content, parse_mode="Markdown")
+
+    if query.data == "acquista":
+        keyboard = [
+            [InlineKeyboardButton("📱 Acquista Instagram", callback_data="acquista_ig")],
+            [InlineKeyboardButton("💼 Acquista Vendita", callback_data="acquista_vendita")],
+            [InlineKeyboardButton("🤖 Acquista Assistant", callback_data="acquista_ai")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.edit_message_text(text=PROMPT_CONTENT["acquista"], reply_markup=reply_markup)
+    else:
+        content = PROMPT_CONTENT.get(query.data, "❌ Selezione non valida.")
+        await query.edit_message_text(text=content, parse_mode="Markdown")
 
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
