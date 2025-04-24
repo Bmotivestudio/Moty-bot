@@ -21,16 +21,16 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     risposta = {
         "pacchetti": "📦 Pacchetti Prompt"
 
-Scegli tra pacchetti pronti per creare contenuti unici, copywriting, marketing o idee business."
+Scegli tra pacchetti pronti per creare contenuti unici, copywriting, marketing o idee business.
         "quiz": "🧠 Quiz Consulenza"
 
-Uno strumento automatizzato per aiutare gli utenti a capire di cosa hanno bisogno."
+Uno strumento automatizzato per aiutare gli utenti a capire di cosa hanno bisogno.
         "pagamenti": "💳 Integrazione Pagamenti"
 
-Possiamo collegare Stripe o attivare i pagamenti nativi di Telegram per automatizzare gli acquisti."
+Possiamo collegare Stripe o attivare i pagamenti nativi di Telegram per automatizzare gli acquisti.
         "branding": "🚀 Branding e Social"
 
-Contenuti visivi, tono di voce, nome brand, bio Instagram: creiamo tutto con Moty Assistant."
+Contenuti visivi, tono di voce, nome brand, bio Instagram: creiamo tutto con Moty Assistant.
     }
     await query.edit_message_text(risposta[query.data], parse_mode="Markdown", reply_markup=get_main_menu())
 
